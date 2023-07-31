@@ -9,7 +9,7 @@ class Layout:
         """
         st.markdown(
             """
-            <h1 style='text-align: center;'>ChatPDF, Chat with your PDF! 💬</h1>
+            <h1 style='text-align: center;'>Chatear con Doc Creatio</h1>
             """,
             unsafe_allow_html=True,
         )
@@ -34,11 +34,11 @@ class Layout:
         with st.form(key="my_form", clear_on_submit=True):
             user_input = st.text_area(
                 "Query:",
-                placeholder="Ask me anything about the PDF...",
+                placeholder="Pregúntame lo que sea sobre Creatio",
                 key="input",
                 label_visibility="collapsed",
             )
-            submit_button = st.form_submit_button(label="Send")
+            submit_button = st.form_submit_button(label="Envía tu pregunta")
 
             is_ready = submit_button and user_input
         return is_ready, user_input

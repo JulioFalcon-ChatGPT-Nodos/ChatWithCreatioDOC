@@ -4,7 +4,6 @@ from langchain.memory import ConversationBufferMemory
 from langchain.schema import HumanMessage, AIMessage
 from streamlit_chat_media import message
 
-
 class ChatHistory:
     def __init__(self):
         self.history = st.session_state.get("history",
@@ -12,14 +11,17 @@ class ChatHistory:
         st.session_state["history"] = self.history
 
     def default_greeting(self):
-        return "Hi ! 👋"
+        return "Hola"
 
     def default_prompt(self, topic):
-        return f"Hello ! Ask me anything about {topic} 🤗"
+        return f"Hola pregúntame lo que sea sobre {topic}"
 
     def initialize(self, topic):
-        message(self.default_greeting(), key='hi', avatar_style="adventurer", is_user=True)
-        message(self.default_prompt(topic), key='ai', avatar_style="thumbs")
+        message(self.default_greeting(), key='hi', avatar_style="adventurer", seed=111, is_user=True)
+        message(self.default_prompt(topic), key='ai', 
+            avatar_style="thumbs", # change this for different user icon
+            seed=123, 
+            ) 
 
     def reset(self):
         st.session_state["history"].clear()
@@ -37,6 +39,10 @@ class ChatHistory:
                             is_user=True,
                             key=f"{i}_user",
                             avatar_style="adventurer",
+                            seed=111,
                         )
                     elif isinstance(msg, AIMessage):
-                        message(msg.content, key=str(i), avatar_style="thumbs")
+                        message(msg.content, key=str(i),
+                            avatar_style="thumbs", # change this for different user icon
+                            seed=123, 
+                            )

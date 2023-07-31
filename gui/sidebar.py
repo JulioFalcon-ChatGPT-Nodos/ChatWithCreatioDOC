@@ -15,20 +15,18 @@ class Sidebar:
 
     @staticmethod
     def about():
-        about = st.sidebar.expander("About 🤖")
+        about = st.sidebar.expander("Acerca de 🤖")
         sections = [
-            "#### ChatPDF is an AI chatbot featuring conversational memory, designed to enable users to discuss their "
-            "PDF data in a more intuitive manner. 📄",
-            "#### Powered by [Langchain](https://github.com/hwchase17/langchain), [OpenAI]("
-            "https://platform.openai.com/docs/models/gpt-3-5) and [Streamlit](https://github.com/streamlit/streamlit) "
-            "⚡",
-            "#### Source code : [Ubisoft-potato/ChatPDF](https://github.com/Ubisoft-potato/ChatPDF)",
+            "#### Chatea con Creatio DOCS es un chatbot de IA con memoria conversacional, diseñado para permitir a las personas que necesitan información " 
+            "de primera mano relacionada con Creatio, puedan usarlo para en su dia a dia o en su entrenamiento para certificarse.📄",
+            "#### Desarrollo efectuado por No Code-Services para sus clientes, usando Langchain, OpenAI y Streamlit."
+            ,
         ]
         for section in sections:
             about.write(section)
 
     def model_selector(self):
-        model = st.selectbox(label="Model", options=self.MODEL_OPTIONS)
+        model = st.selectbox(label="Modelo", options=self.MODEL_OPTIONS)
         st.session_state["model"] = model
 
     @staticmethod
@@ -39,7 +37,7 @@ class Sidebar:
 
     def temperature_slider(self):
         temperature = st.slider(
-            label="Temperature",
+            label="Temperatura, te recomendo usar 0",
             min_value=self.TEMPERATURE_MIN_VALUE,
             max_value=self.TEMPERATURE_MAX_VALUE,
             value=self.TEMPERATURE_DEFAULT_VALUE,
@@ -48,12 +46,12 @@ class Sidebar:
         st.session_state["temperature"] = temperature
 
     def show_options(self):
-        with st.sidebar.expander("🛠️ Tools", expanded=True):
+        with st.sidebar.expander("🛠️ OpenAI Config", expanded=True):
             self.reset_chat_button()
             self.model_selector()
             self.temperature_slider()
-            st.session_state.setdefault("model", self.MODEL_OPTIONS[0])
-            st.session_state.setdefault("temperature", self.TEMPERATURE_DEFAULT_VALUE)
+            st.session_state.setdefault("Model", self.MODEL_OPTIONS[0])
+            st.session_state.setdefault("Temperature", self.TEMPERATURE_DEFAULT_VALUE)
 
 
 class Utilities:
@@ -65,13 +63,13 @@ class Utilities:
         """
         if os.path.exists(".env") and os.environ.get("OPENAI_API_KEY") is not None:
             user_api_key = os.environ["OPENAI_API_KEY"]
-            st.sidebar.success("API key loaded from .env", icon="🚀")
+            st.sidebar.success("API key cargada en forma local, desde .env", icon="🚀")
         else:
             user_api_key = st.sidebar.text_input(
-                label="#### Your OpenAI API key 👇", placeholder="Paste your openAI API key, sk-", type="password"
+                label="#### OpenAI API KEY 👇", placeholder="Introduce tu API key de openAI, empieza por sk-", type="password"
             )
             if user_api_key:
-                st.sidebar.success("API key loaded", icon="🚀")
+                st.sidebar.success("API key cargada", icon="🚀")
         return user_api_key
 
     @staticmethod
@@ -84,7 +82,7 @@ class Utilities:
             pass
         else:
             st.sidebar.info(
-                "Upload your PDF file to get started", icon="👆"
+                "Sube tus manuales de Creatio, en formato PDF, para empezar", icon="👆"
             )
             st.session_state["reset_chat"] = True
         return uploaded_file
@@ -95,7 +93,7 @@ class Utilities:
         Sets up the chatbot with the uploaded file, model, and temperature
         """
         embeds = Embedder()
-        with st.spinner("Processing..."):
+        with st.spinner("Procesando..."):
             uploaded_file.seek(0)
             file = uploaded_file.read()
             vectors = embeds.getDocEmbeds(file, uploaded_file.name)
